@@ -325,6 +325,42 @@ input[list].inp::-webkit-list-button{opacity:.5}
 .tp-chip:hover{border-color:var(--cyan);color:var(--cyan)}
 .tp-chip.sel{background:var(--cyan3);border-color:var(--cyan);color:var(--cyan)}
 .task-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;max-height:140px;overflow-y:auto;padding:2px 0}
+
+/* ── TIMELINE ROADMAP ─────────────────────────────────────────── */
+.tl-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;align-items:start}
+.tl-col{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.tl-col-head{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.tl-col-title{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;flex:1}
+.tl-col-count{font-size:11px;font-weight:700;background:rgba(255,255,255,.08);padding:2px 9px;border-radius:12px;color:var(--muted);flex-shrink:0}
+.tl-col-body{padding:8px;display:flex;flex-direction:column;gap:7px;min-height:80px;max-height:560px;overflow-y:auto}
+.tl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;padding:9px 11px;transition:all .15s;cursor:default}
+.tl-card:hover{border-color:var(--border2);background:rgba(255,255,255,.065)}
+.tl-card-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.35}
+.tl-card-meta{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px}
+.tl-card-foot{display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:wrap}
+.tl-empty{font-size:11px;color:var(--muted2);text-align:center;padding:16px 8px;font-style:italic;opacity:.5}
+
+/* ── PRIORITY MATRIX ──────────────────────────────────────────── */
+.mx-board{display:grid;grid-template-columns:52px 1fr 1fr;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.mx-axis-top{display:grid;grid-template-columns:52px 1fr 1fr;gap:0}
+.mx-axis-lbl{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px 6px;border-bottom:1px solid var(--border)}
+.mx-axis-side{display:flex;align-items:center;justify-content:center;padding:6px 2px;border-right:1px solid var(--border)}
+.mx-axis-side-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg)}
+.mx-quad{border:1px solid transparent;padding:10px;display:flex;flex-direction:column;gap:6px;min-height:220px;max-height:380px;overflow-y:auto;border-bottom:1px solid var(--border)}
+.mx-quad.q1{background:rgba(220,38,38,.06);border-right:1px solid var(--border)}
+.mx-quad.q2{background:rgba(34,197,94,.04);border-right:none}
+.mx-quad.q3{background:rgba(245,158,11,.05);border-right:1px solid var(--border);border-bottom:none}
+.mx-quad.q4{background:rgba(255,255,255,.02);border-right:none;border-bottom:none}
+.mx-quad-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mx-quad-title{font-size:11px;font-weight:700;letter-spacing:.03em}
+.mx-quad-sub{font-size:10px;color:var(--muted2);margin-top:1px}
+.mx-quad-cnt{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--muted)}
+.mx-card{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:7px;padding:8px 10px}
+.mx-card-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:4px}
+.mx-card-meta{display:flex;gap:4px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.mx-empty{font-size:11px;color:var(--muted2);text-align:center;padding:20px 8px;font-style:italic;opacity:.5;flex:1;display:flex;align-items:center;justify-content:center}
+.mx-add-btn{width:100%;padding:7px;background:rgba(255,255,255,.03);border:1px dashed var(--border2);border-radius:6px;color:var(--muted2);font-family:var(--f);font-size:11px;cursor:pointer;transition:all .15s;text-align:center}
+.mx-add-btn:hover{border-color:var(--cyan);color:var(--cyan)}
 </style>
 </head>
 <body>
@@ -354,6 +390,8 @@ input[list].inp::-webkit-list-button{opacity:.5}
 <div id="view-clients" class="view"></div>
 <div id="view-roadmap" class="view"></div>
 <div id="view-report-gen" class="view"></div>
+<div id="view-timeline"   class="view"></div>
+<div id="view-matrix"     class="view"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
@@ -385,7 +423,7 @@ const KEY = 'sete_wl_v2';
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
-let S = {lists:[], clients:[...DEF_CLIENTS], reports:[]};
+let S = {lists:[], clients:[...DEF_CLIENTS], reports:[], matrix:{}};
 let currentListId = null;
 let editingListId  = null;
 let editingTaskId  = null;  // for task edit modal
@@ -397,6 +435,8 @@ let detailTab = 'gestao';
 let currentScreen = 'home';
 let currentRoadmapClient = '';
 let gestaoView = 'cliente'; // 'lista' | 'cliente' | 'projeto'
+let tlFilterClient = '', tlFilterStatus = '', tlFilterPriority = '';
+let matrixFilterClient = '';
 
 // ═══════════════════════════════════════════════════════════════
 // ── JSONBIN CONFIG — cole suas credenciais aqui ────────────────
@@ -502,14 +542,14 @@ async function hydrate(){
     // Try localStorage
     try{
       const r = localStorage.getItem(KEY);
-      if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; setSyncStatus('local','Arquivo local'); return; } }
+      if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; setSyncStatus('local','Arquivo local'); return; } }
     }catch(e){}
     // Try embedded JSON tag
     try{
       const el = document.getElementById('__data_backup__');
       if(el && el.textContent.trim()){
         const d=JSON.parse(el.textContent);
-        if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; persistLocal(); setSyncStatus('local','Arquivo local'); return; }
+        if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; persistLocal(); setSyncStatus('local','Arquivo local'); return; }
       }
     }catch(e){}
     setSyncStatus('local','Arquivo local');
@@ -528,6 +568,8 @@ async function hydrate(){
         if(d && d.lists){
           S = d;
           if(!S.clients) S.clients=[...DEF_CLIENTS];
+          if(!S.reports) S.reports=[];
+          if(!S.matrix) S.matrix={};
           persistLocal();
           setSyncStatus('saved','Nuvem');
           setTimeout(()=>setSyncStatus('idle'), 2500);
@@ -542,7 +584,7 @@ async function hydrate(){
   // Fallback: localStorage
   try{
     const r = localStorage.getItem(KEY);
-    if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; setSyncStatus('offline','Cache local'); return; } }
+    if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; setSyncStatus('offline','Cache local'); return; } }
   }catch(e){}
 
   // Fallback: embedded tag
@@ -550,7 +592,7 @@ async function hydrate(){
     const el = document.getElementById('__data_backup__');
     if(el && el.textContent.trim()){
       const d=JSON.parse(el.textContent);
-      if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; persistLocal(); setSyncStatus('offline','Dados do arquivo'); return; }
+      if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; persistLocal(); setSyncStatus('offline','Dados do arquivo'); return; }
     }
   }catch(e){}
 
@@ -700,7 +742,7 @@ function fmtDate(iso){
 // ═══════════════════════════════════════════════════════════════
 function show(s){
   currentScreen=s;
-  ['home','detail','geral','clients','roadmap','report-gen'].forEach(x=>{
+  ['home','detail','geral','clients','roadmap','report-gen','timeline','matrix'].forEach(x=>{
     document.getElementById('view-'+x).classList.toggle('active',x===s);
   });
   renderTopbar();
@@ -711,6 +753,8 @@ function openGeral(){show('geral');renderGeral();}
 function openClients(){show('clients');renderClients();}
 function openRoadmap(clientFilter){currentRoadmapClient=clientFilter||'';show('roadmap');renderRoadmap();}
 function openReportGen(){show('report-gen');renderReportGen();}
+function openTimeline(){tlFilterClient='';tlFilterStatus='';tlFilterPriority='';show('timeline');renderTimeline();}
+function openMatrix(){show('matrix');renderMatrix();}
 
 function commit(){
   persist();
@@ -723,6 +767,8 @@ function commit(){
   else if(currentScreen==='geral')renderGeral();
   else if(currentScreen==='clients')renderClients();
   else if(currentScreen==='roadmap')renderRoadmap();
+  else if(currentScreen==='timeline')renderTimeline();
+  else if(currentScreen==='matrix')renderMatrix();
   renderTopbar();
 }
 
@@ -737,6 +783,8 @@ function renderTopbar(){
       <div class="tnav active">Worklists</div>
       <div class="tnav" onclick="openGeral()">Report Geral</div>
       <div class="tnav" onclick="openRoadmap()">Roadmap</div>
+      <div class="tnav" onclick="openTimeline()">⏱ Timeline</div>
+      <div class="tnav" onclick="openMatrix()">🎯 Matriz</div>
       <div class="tnav" onclick="openReportGen()">Report Cliente</div>
       <div class="tnav" onclick="openClients()">Clientes</div>`;
     right.innerHTML=`
@@ -777,6 +825,16 @@ function renderTopbar(){
     nav.innerHTML=`
       <div class="tnav" onclick="goHome()">${SVG_BACK} Worklists</div>
       <div class="tnav active">Report Geral</div>`;
+    right.innerHTML=`<button class="btn ghost sm" onclick="exportHTML()">Exportar HTML</button>`;
+  } else if(currentScreen==='timeline'){
+    nav.innerHTML=`
+      <div class="tnav" onclick="goHome()">${SVG_BACK} Worklists</div>
+      <div class="tnav active">⏱ Roadmap Temporal</div>`;
+    right.innerHTML=`<button class="btn ghost sm" onclick="exportHTML()">Exportar HTML</button>`;
+  } else if(currentScreen==='matrix'){
+    nav.innerHTML=`
+      <div class="tnav" onclick="goHome()">${SVG_BACK} Worklists</div>
+      <div class="tnav active">🎯 Matriz de Prioridades</div>`;
     right.innerHTML=`<button class="btn ghost sm" onclick="exportHTML()">Exportar HTML</button>`;
   } else {
     nav.innerHTML=`
@@ -2164,6 +2222,328 @@ function renderReportGen(){
     rgSel(RG.semaphore);
     if(RG.selectedClient) renderTaskChips();
   },10);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TIMELINE ROADMAP (Planejamento Temporal)
+// ═══════════════════════════════════════════════════════════════
+function renderTimeline(){
+  const el=document.getElementById('view-timeline');
+  if(!el)return;
+
+  const NOW   = new Date(); NOW.setHours(0,0,0,0);
+  const D3    = new Date(NOW); D3.setDate(D3.getDate()+3);
+  const D7    = new Date(NOW); D7.setDate(D7.getDate()+7);
+  const D15   = new Date(NOW); D15.setDate(D15.getDate()+15);
+  const D30   = new Date(NOW); D30.setDate(D30.getDate()+30);
+
+  function parseDate(iso){
+    if(!iso)return null;
+    const [y,m,d]=iso.split('-');
+    const dt=new Date(Number(y),Number(m)-1,Number(d)); dt.setHours(0,0,0,0);
+    return dt;
+  }
+
+  // Gather & filter
+  let tasks = allTasks().filter(t=>t.status!=='concluido');
+  if(tlFilterClient)   tasks=tasks.filter(t=>t.client===tlFilterClient);
+  if(tlFilterStatus)   tasks=tasks.filter(t=>t.status===tlFilterStatus);
+  if(tlFilterPriority) tasks=tasks.filter(t=>t.priority===tlFilterPriority);
+
+  // Buckets
+  const overdue=[],h72=[],d7=[],d15=[],d30=[],noDate=[];
+
+  tasks.forEach(t=>{
+    const dt=parseDate(t.dueDate);
+    if(!dt){ noDate.push(t); return; }
+    if(dt<NOW)  { overdue.push(t); return; }
+    if(dt<=D3)  { h72.push(t);    return; }
+    if(dt<=D7)  { d7.push(t);     return; }
+    if(dt<=D15) { d15.push(t);    return; }
+    if(dt<=D30) { d30.push(t);    return; }
+    noDate.push(t);
+  });
+
+  // Prioridade por cores
+  const PMAP={'critica':'rgba(0,229,195,.12)','alta':'rgba(245,166,35,.1)','media':'rgba(59,130,246,.08)','baixa':'rgba(255,255,255,.04)'};
+  const PBORDER={'critica':'rgba(0,229,195,.3)','alta':'rgba(245,166,35,.25)','media':'rgba(59,130,246,.2)','baixa':'var(--border)'};
+
+  function tlCard(t){
+    const isOverdue=t.dueDate && parseDate(t.dueDate)<NOW;
+    const bg=PMAP[t.priority]||'rgba(255,255,255,.04)';
+    const bd=PBORDER[t.priority]||'var(--border)';
+    return `<div class="tl-card" style="background:${bg};border-color:${bd}">
+      <div class="tl-card-name">${t.name}</div>
+      <div class="tl-card-meta">
+        ${t.client?`<span class="badge b-client" style="font-size:9px;padding:1px 6px">${t.client}</span>`:''}
+        ${t.person?`<span class="badge b-person" style="font-size:9px;padding:1px 6px">${t.person}</span>`:''}
+      </div>
+      <div class="tl-card-foot">
+        <span class="badge ${prioCls(t.priority)}" style="font-size:9px;padding:1px 5px">${prioLbl(t.priority)}</span>
+        ${t.dueDate?`<span style="font-size:10px;font-weight:600;${isOverdue?'color:#f87171':'color:var(--muted2)'}">${isOverdue?'⚠ ':''}${fmtDate(t.dueDate)}</span>`:''}
+      </div>
+    </div>`;
+  }
+
+  function tlCol(title,tasks,topColor,label){
+    const cards=tasks.length?tasks.map(tlCard).join(''):`<div class="tl-empty">Sem demandas</div>`;
+    return `<div class="tl-col" style="border-top:3px solid ${topColor}">
+      <div class="tl-col-head">
+        <div>
+          <div class="tl-col-title" style="color:${topColor}">${title}</div>
+          ${label?`<div style="font-size:10px;color:var(--muted2);margin-top:1px">${label}</div>`:''}
+        </div>
+        <span class="tl-col-count">${tasks.length}</span>
+      </div>
+      <div class="tl-col-body">${cards}</div>
+    </div>`;
+  }
+
+  // Filter options
+  const allClients=[...new Set(allTasks().map(t=>t.client).filter(Boolean))].sort();
+  const cOpts2=`<option value="">Todos clientes</option>`+allClients.map(c=>`<option value="${c}"${tlFilterClient===c?' selected':''}>${c}</option>`).join('');
+  const pOpts2=`<option value="">Todas prioridades</option>`+PRIORITIES.map(p=>`<option value="${p.v}"${tlFilterPriority===p.v?' selected':''}>${p.lbl}</option>`).join('');
+  const sOpts2=`<option value="">Todos status</option>
+    <option value="pendente"${tlFilterStatus==='pendente'?' selected':''}>· Pendente</option>
+    <option value="em andamento"${tlFilterStatus==='em andamento'?' selected':''}>⏳ Em andamento</option>`;
+
+  const hasFilter=tlFilterClient||tlFilterStatus||tlFilterPriority;
+  const totalVis=overdue.length+h72.length+d7.length+d15.length+d30.length+noDate.length;
+
+  el.innerHTML=`
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:12px">
+      <div>
+        <h2 style="font-size:20px;font-weight:700;letter-spacing:-.02em">Roadmap Temporal</h2>
+        <div style="font-size:12px;color:var(--muted2);margin-top:3px">Planejamento por prazo e prioridade · <b style="color:var(--cyan)">${totalVis}</b> demanda${totalVis!==1?'s':''} em aberto</div>
+      </div>
+      <div class="filter-bar" style="margin-bottom:0">
+        <label>Filtrar</label>
+        <select class="inp ${tlFilterClient?'filter-active':''}" style="width:130px" onchange="tlFilterClient=this.value;renderTimeline()">${cOpts2}</select>
+        <select class="inp ${tlFilterPriority?'filter-active':''}" style="width:130px" onchange="tlFilterPriority=this.value;renderTimeline()">${pOpts2}</select>
+        <select class="inp ${tlFilterStatus?'filter-active':''}" style="width:130px" onchange="tlFilterStatus=this.value;renderTimeline()">${sOpts2}</select>
+        ${hasFilter?`<button class="btn xs danger" onclick="tlFilterClient='';tlFilterStatus='';tlFilterPriority='';renderTimeline()">✕ Limpar</button>`:''}
+        <span class="filter-count"><b>${totalVis}</b> demanda${totalVis!==1?'s':''}</span>
+      </div>
+    </div>
+    <div class="tl-board">
+      ${tlCol('🔥 OVERDUE',overdue,'#ef4444','Atrasadas')}
+      ${tlCol('⚡ HOJE / 72H',h72,'#f59e0b','Prioridades imediatas')}
+      ${tlCol('📅 PRÓXIMOS 7 DIAS',d7,'#3b82f6','Esta semana')}
+      ${tlCol('📋 PRÓXIMOS 15 DIAS',d15,'var(--cyan)','Planejamento tático')}
+      ${tlCol('🚀 PRÓXIMOS 30 DIAS',d30,'#22c55e','Planejamento estratégico')}
+      ${noDate.length?tlCol('📌 SEM PRAZO',noDate,'var(--muted2)','Backlog / sem data'):''}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PRIORITY MATRIX (Matriz de Eisenhower)
+// ═══════════════════════════════════════════════════════════════
+function initMatrix(){if(!S.matrix)S.matrix={};}
+
+function renderMatrix(){
+  const el=document.getElementById('view-matrix');
+  if(!el)return;
+  initMatrix();
+
+  // Classify tasks into quadrants
+  const q1=[],q2=[],q3=[],q4=[];
+  Object.entries(S.matrix).forEach(([id,q])=>{
+    const t=allTasks().find(x=>x.id===id);
+    if(!t)return;
+    if(q==='q1')q1.push(t);
+    else if(q==='q2')q2.push(t);
+    else if(q==='q3')q3.push(t);
+    else if(q==='q4')q4.push(t);
+  });
+
+  // Filter options
+  const allClients=[...new Set(allTasks().map(t=>t.client).filter(Boolean))].sort();
+  const cOpts3=`<option value="">Todos clientes</option>`+allClients.map(c=>`<option value="${c}"${matrixFilterClient===c?' selected':''}>${c}</option>`).join('');
+
+  // Card render
+  function mxCard(t,q){
+    const isDone=t.status==='concluido';
+    return `<div class="mx-card" style="${isDone?'opacity:.45':''}">
+      <div class="mx-card-name" style="${isDone?'text-decoration:line-through;color:var(--muted2)':''}">${t.name}</div>
+      <div class="mx-card-meta">
+        <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+          ${t.client?`<span class="badge b-client" style="font-size:9px;padding:1px 6px">${t.client}</span>`:''}
+          ${t.person?`<span class="badge b-person" style="font-size:9px;padding:1px 6px">${t.person}</span>`:''}
+          <span class="badge ${prioCls(t.priority)}" style="font-size:9px;padding:1px 5px">${prioLbl(t.priority)}</span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:5px">
+          <select class="inp" style="font-size:10px;padding:2px 5px;height:20px;background:rgba(255,255,255,.06)" onchange="moveTaskMatrix('${t.id}',this.value)">
+            <option value="q1"${q==='q1'?' selected':''}>Q1 Fazer agora</option>
+            <option value="q2"${q==='q2'?' selected':''}>Q2 Planejar</option>
+            <option value="q3"${q==='q3'?' selected':''}>Q3 Delegar</option>
+            <option value="q4"${q==='q4'?' selected':''}>Q4 Eliminar</option>
+          </select>
+          <button class="btn icon-btn" title="Remover da matriz" onclick="removeFromMatrix('${t.id}')" style="width:20px;height:20px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function mxQuad(label,sub,tasks,q,color,icon){
+    const cards=tasks.length?tasks.map(t=>mxCard(t,q)).join(''):`<div class="mx-empty">Arraste ou adicione tarefas aqui</div>`;
+    return `<div class="mx-quad ${q}">
+      <div class="mx-quad-head">
+        <div>
+          <div class="mx-quad-title" style="color:${color}">${icon} ${label}</div>
+          <div class="mx-quad-sub">${sub}</div>
+        </div>
+        <span class="mx-quad-cnt">${tasks.length}</span>
+      </div>
+      ${cards}
+      <button class="mx-add-btn" onclick="openAddToMatrix('${q}')">+ Adicionar tarefa</button>
+    </div>`;
+  }
+
+  el.innerHTML=`
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:12px">
+      <div>
+        <h2 style="font-size:20px;font-weight:700;letter-spacing:-.02em">Matriz de Prioridades</h2>
+        <div style="font-size:12px;color:var(--muted2);margin-top:3px">Matriz de Eisenhower · organize por urgência × importância</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <select class="inp ${matrixFilterClient?'filter-active':''}" style="width:140px" onchange="matrixFilterClient=this.value;renderMatrix()">${cOpts3}</select>
+        <button class="btn cy sm" onclick="openAddToMatrix('')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M12 5v14M5 12h14"/></svg>
+          Adicionar tarefa
+        </button>
+        ${Object.keys(S.matrix).length?`<button class="btn danger sm" onclick="clearMatrix()">🗑 Limpar matriz</button>`:''}
+      </div>
+    </div>
+
+    <!-- axis labels top -->
+    <div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:0;margin-bottom:0">
+      <div></div>
+      <div style="text-align:center;padding:8px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#ef4444;border-bottom:2px solid #ef4444;margin:0 2px 4px">🔴 URGENTE</div>
+      <div style="text-align:center;padding:8px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#3b82f6;border-bottom:2px solid #3b82f6;margin:0 2px 4px">🔵 NÃO URGENTE</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:0">
+      <!-- side labels -->
+      <div style="display:grid;grid-template-rows:1fr 1fr;gap:8px;padding:0 4px 0 0">
+        <div style="display:flex;align-items:center;justify-content:center">
+          <span style="writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#22c55e;white-space:nowrap">🟢 IMPORTANTE</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center">
+          <span style="writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);white-space:nowrap">⚫ NÃO IMPORTANTE</span>
+        </div>
+      </div>
+      <!-- quadrants grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;grid-column:2/-1">
+        ${mxQuad('FAZER AGORA','Urgente + Importante',q1,'q1','#ef4444','🔥')}
+        ${mxQuad('PLANEJAR','Não urgente + Importante',q2,'q2','#22c55e','📅')}
+        ${mxQuad('DELEGAR','Urgente + Não importante',q3,'q3','#f59e0b','👥')}
+        ${mxQuad('ELIMINAR','Não urgente + Não importante',q4,'q4','var(--muted2)','🗑')}
+      </div>
+    </div>`;
+}
+
+function moveTaskMatrix(taskId,quadrant){
+  initMatrix();
+  S.matrix[taskId]=quadrant;
+  persist();
+  // update only the selects without full re-render
+}
+
+function removeFromMatrix(taskId){
+  initMatrix();
+  delete S.matrix[taskId];
+  persist();
+  renderMatrix();
+}
+
+function clearMatrix(){
+  if(!confirm('Limpar toda a matriz? As tarefas não serão excluídas.'))return;
+  S.matrix={};
+  persist();
+  renderMatrix();
+  toast('Matriz limpa.');
+}
+
+function openAddToMatrix(defaultQuad){
+  initMatrix();
+  const inMatrix=new Set(Object.keys(S.matrix));
+  const allTs=allTasks().filter(t=>!inMatrix.has(t.id));
+  if(!allTs.length){toast('Todas as tarefas já estão na matriz!');return;}
+
+  const grouped={};
+  allTs.forEach(t=>{const k=t.client||'Sem cliente';(grouped[k]=grouped[k]||[]).push(t);});
+  const taskOpts=Object.keys(grouped).sort().map(cli=>`
+    <optgroup label="${cli}">
+      ${grouped[cli].map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}
+    </optgroup>`).join('');
+
+  showModal(`
+    <div class="drawer-head">
+      <h3>Adicionar à Matriz</h3>
+      <button class="btn icon-btn ghost" onclick="closeModal()">${SVG_CLOSE}</button>
+    </div>
+    <div class="drawer-body">
+      <div class="frow">
+        <label>Tarefa</label>
+        <select class="inp" id="mx-task-sel" style="width:100%">${taskOpts}</select>
+      </div>
+      <div class="frow">
+        <label>Quadrante</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px" id="mx-quad-opts">
+          ${[
+            {v:'q1',lbl:'🔥 Fazer agora',sub:'Urgente + Importante',col:'#ef4444'},
+            {v:'q2',lbl:'📅 Planejar',sub:'Não urgente + Importante',col:'#22c55e'},
+            {v:'q3',lbl:'👥 Delegar',sub:'Urgente + Não importante',col:'#f59e0b'},
+            {v:'q4',lbl:'🗑 Eliminar',sub:'Não urgente + Não importante',col:'var(--muted2)'}
+          ].map(q=>`
+            <div onclick="selectMxQuad('${q.v}')" id="mxq-${q.v}"
+              style="padding:10px 12px;border:1.5px solid ${defaultQuad===q.v?q.col:'var(--border2)'};border-radius:8px;cursor:pointer;transition:all .15s;background:${defaultQuad===q.v?'rgba(255,255,255,.06)':'transparent'}">
+              <div style="font-size:12px;font-weight:600;color:${q.col}">${q.lbl}</div>
+              <div style="font-size:10px;color:var(--muted2);margin-top:2px">${q.sub}</div>
+            </div>`).join('')}
+        </div>
+        <input type="hidden" id="mx-quad-val" value="${defaultQuad||'q1'}">
+      </div>
+    </div>
+    <div class="drawer-foot">
+      <div class="spacer"></div>
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn cy" onclick="saveToMatrix()">Adicionar</button>
+    </div>`);
+  // highlight default
+  if(defaultQuad) selectMxQuad(defaultQuad);
+  else selectMxQuad('q1');
+}
+
+function selectMxQuad(v){
+  const COLORS={q1:'#ef4444',q2:'#22c55e',q3:'#f59e0b',q4:'var(--muted2)'};
+  ['q1','q2','q3','q4'].forEach(q=>{
+    const el=document.getElementById('mxq-'+q);
+    if(!el)return;
+    if(q===v){
+      el.style.borderColor=COLORS[q];
+      el.style.background='rgba(255,255,255,.06)';
+    }else{
+      el.style.borderColor='var(--border2)';
+      el.style.background='transparent';
+    }
+  });
+  const inp=document.getElementById('mx-quad-val');
+  if(inp)inp.value=v;
+}
+
+function saveToMatrix(){
+  const taskId=document.getElementById('mx-task-sel').value;
+  const quad=document.getElementById('mx-quad-val').value;
+  if(!taskId||!quad){toast('⚠ Selecione uma tarefa e um quadrante');return;}
+  initMatrix();
+  S.matrix[taskId]=quad;
+  persist();
+  closeModal();
+  renderMatrix();
+  toast('✅ Tarefa adicionada à matriz!');
 }
 
 // ── PDF GENERATION ─────────────────────────────────────────────
