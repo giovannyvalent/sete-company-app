@@ -52,7 +52,7 @@ body{
 .btn svg{width:13px;height:13px;flex-shrink:0}
 
 /* ── VIEWS ── */
-.view{display:none;max-width:1020px;margin:0 auto;padding:2rem;animation:fadeUp .2s ease both}
+.view{display:none;max-width:1600px;margin:0 auto;padding:1.1rem 1.5rem;animation:fadeUp .2s ease both}
 .view.active{display:block}
 
 /* ── HOME ── */
@@ -327,7 +327,7 @@ input[list].inp::-webkit-list-button{opacity:.5}
 .task-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;max-height:140px;overflow-y:auto;padding:2px 0}
 
 /* ── TIMELINE ROADMAP ─────────────────────────────────────────── */
-.tl-scroll-wrap{overflow-x:auto;padding-bottom:10px;margin:0 -2rem;padding-left:2rem;padding-right:2rem}
+.tl-scroll-wrap{overflow-x:auto;padding-bottom:10px;margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem}
 .tl-board{display:flex;gap:10px;align-items:start;min-width:max-content}
 .tl-col{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden;width:250px;flex-shrink:0;display:flex;flex-direction:column}
 .tl-col-head{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
@@ -2550,8 +2550,8 @@ function saveToMatrix(){
   toast('✅ Tarefa adicionada à matriz!');
 }
 
-// ── PDF GENERATION ─────────────────────────────────────────────
-function generatePDF(){
+// ── PDF GENERATION (legacy — kept for LOGO_B64 reference only) ─
+function generatePDF_OLD(){
   if(typeof window.jspdf==='undefined'){toast('Carregando biblioteca PDF... tente novamente em 2s.');return;}
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
@@ -2847,6 +2847,332 @@ function generatePDF(){
 }
 
 
+
+// ═══════════════════════════════════════════════════════════════
+// PDF GENERATION — Relatório Executivo (redesign 2026)
+// ═══════════════════════════════════════════════════════════════
+function generatePDF(){
+  if(typeof window.jspdf==='undefined'){toast('Carregando biblioteca PDF... tente novamente em 2s.');return;}
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const rv=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+
+  const PW=210,PH=297,M=16,CW=PW-M*2;
+  let y=0,pageNum=0,secNum=1;
+
+  // ── PALETTE ──────────────────────────────────────────────────
+  const W  =[255,255,255];
+  const BK =[12,12,15];
+  const GY1=[248,249,250];
+  const GY2=[229,231,235];
+  const GY3=[156,163,175];
+  const GY4=[75,85,99];
+  const GY5=[17,24,39];
+  const GRN=[34,197,94];
+  const AMB=[245,158,11];
+  const RED=[239,68,68];
+
+  const STAT_C={
+    'Concluído':GRN,'Concluido':GRN,'Em andamento':AMB,'Em aberto':AMB,
+    'Pendente':RED,'Cancelado':GY3,'Planejado':GY4,'Bloqueado':RED,'Aguardando cliente':AMB
+  };
+  const PRIO_C={'Alta':RED,'Media':AMB,'Média':AMB,'Baixa':GRN};
+
+  // ── FORM VALUES ──────────────────────────────────────────────
+  const client  =rv('rg-client')||RG.selectedClient||'Cliente';
+  const project =rv('rg-project')||'';
+  const period2 =rv('rg-period')||'';
+  const dateVal =rv('rg-date')||todayISO();
+  const resp    =rv('rg-resp')||'';
+  const version =rv('rg-version')||'v1.0';
+  const company =rv('rg-company')||'Sete Company Tecnologia';
+  const execCmt =rv('rg-execcomment')||'';
+  const closing =rv('rg-closing')||'';
+
+  // ── HELPERS ──────────────────────────────────────────────────
+  function sf(sz,st,col){doc.setFontSize(sz);doc.setFont('helvetica',st||'normal');doc.setTextColor(...(col||GY5));}
+  function fill(col){doc.setFillColor(...col);}
+  function stroke(col,w){doc.setDrawColor(...col);doc.setLineWidth(w||0.2);}
+  function diamond(cx,cy,s,col){
+    fill(col||BK);
+    doc.lines([[s,s],[s,-s],[-s,-s],[-s,s]],cx-s,cy,[1,1],'F');
+  }
+
+  // ── PAGE HEADER (interior) ────────────────────────────────────
+  function pageHeader(){
+    fill(BK);doc.rect(0,0,PW,1.8,'F');
+    diamond(M-3,8.5,3,BK);
+    sf(7.5,'bold',GY5);doc.text(company,M+3,9.5);
+    sf(7,'normal',GY3);
+    doc.text('Relatório Executivo'+(period2?' | '+period2:''),PW-M,9.5,{align:'right'});
+    y=20;
+  }
+
+  // ── PAGE FOOTER ──────────────────────────────────────────────
+  function pageFooter(){
+    stroke(GY2,0.3);doc.line(M,PH-13,PW-M,PH-13);
+    sf(7,'normal',GY3);doc.text(company,M,PH-7);
+    sf(7.5,'bold',GY4);doc.text(String(pageNum),PW-M,PH-7,{align:'right'});
+  }
+
+  function newPage(){
+    doc.addPage();pageNum++;
+    fill(W);doc.rect(0,0,PW,PH,'F');
+    pageHeader();pageFooter();
+  }
+  function guard(h){if(y+(h||20)>PH-22)newPage();}
+
+  // ── SECTION TITLE ────────────────────────────────────────────
+  function sectionTitle(title){
+    secNum++;
+    guard(42);
+    sf(13,'normal',GY2);doc.text(String(secNum).padStart(2,'0'),M,y+11);
+    sf(22,'bold',GY5);doc.text(title,M,y+25);
+    y+=36;
+    stroke(GY2,0.4);doc.line(M,y,PW-M,y);
+    y+=9;
+  }
+
+  // ── TABLE ────────────────────────────────────────────────────
+  function drawTable2(colDefs,rows,footnote){
+    if(!rows.length)return;
+    const HEAD_H=8.5,ROW_H=9;
+    const totalW=colDefs.reduce((s,c)=>s+c.w,0);
+    const ws=colDefs.map(c=>parseFloat((c.w/totalW*CW).toFixed(2)));
+    guard(HEAD_H+ROW_H+2);
+    fill(GY5);doc.rect(M,y,CW,HEAD_H,'F');
+    let hx=M;
+    colDefs.forEach((c,i)=>{
+      sf(6.5,'bold',W);doc.text(c.label.toUpperCase(),hx+3,y+5.8);
+      hx+=ws[i];
+    });
+    y+=HEAD_H;
+    rows.forEach((row,ri)=>{
+      const dl=(row.desc||'').trim();
+      const dLines=dl?doc.splitTextToSize(dl,CW-6).slice(0,3):[];
+      const rh=ROW_H+(dLines.length?dLines.length*4+3:0);
+      guard(rh+1);
+      if(ri%2===0){fill(GY1);doc.rect(M,y,CW,rh,'F');}
+      const midY=y+ROW_H/2+1.5;
+      let rx=M;
+      row.cells.forEach((val,ci)=>{
+        const t=colDefs[ci].type||'text';
+        if(t==='status'){sf(7.5,'bold',STAT_C[val]||GY4);doc.text(String(val||''),rx+3,midY+0.5);}
+        else if(t==='prio'){sf(7.5,'bold',PRIO_C[val]||GY4);doc.text(String(val||''),rx+3,midY+0.5);}
+        else if(t==='pct'){
+          const pct=Math.min(100,Math.max(0,parseInt(val)||0));
+          const bw=ws[ci]-18;
+          stroke(GY2,0.3);doc.rect(rx+3,midY-2.5,bw,3,'S');
+          if(pct>0){fill(pct>=100?GRN:pct>=50?AMB:RED);doc.rect(rx+3,midY-2.5,bw*pct/100,3,'F');}
+          sf(6.5,'bold',GY4);doc.text(pct+'%',rx+3+bw+2,midY+0.5);
+        }else{
+          sf(ci===0?8:7.5,ci===0?'bold':'normal',ci===0?GY5:GY4);
+          doc.text((doc.splitTextToSize(String(val||''),ws[ci]-5))[0]||'',rx+3,midY+0.5);
+        }
+        rx+=ws[ci];
+      });
+      if(dLines.length){sf(6.5,'normal',GY3);doc.text(dLines,M+3,y+ROW_H+2.5);}
+      stroke(GY2,0.12);doc.line(M,y+rh,PW-M,y+rh);
+      y+=rh;
+    });
+    if(footnote){y+=4;sf(7,'normal',GY3);doc.text('ⓘ  '+footnote,M,y);y+=7;}
+    else y+=5;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // COVER (PAGE 1)
+  // ════════════════════════════════════════════════════════════
+  pageNum=1;
+  fill(BK);doc.rect(0,0,PW,PH,'F');
+  // Decorative circles bottom-right
+  fill([20,20,24]);doc.circle(PW+30,PH+12,115,'F');
+  fill([16,16,20]);doc.circle(PW+6,PH-28,90,'F');
+  fill([26,26,32]);doc.circle(PW-24,PH+32,72,'F');
+  // Logo + company top-left
+  diamond(M,14,4,W);
+  sf(9,'bold',W);doc.text(company,M+8,15.5);
+  // Title
+  sf(46,'bold',W);
+  doc.text('Relatório',M,133);
+  doc.text('Executivo',M,161);
+  // Accent line
+  fill(W);doc.rect(M,168,32,1.2,'F');
+  // Subtitle
+  sf(10,'normal',[175,180,192]);
+  doc.text('Visão geral de atividades, indicadores',M,179);
+  doc.text('e entregas',M,186);
+  // Meta
+  stroke([42,42,52],0.3);doc.line(M,PH-30,68,PH-30);
+  sf(8.5,'bold',[195,200,212]);doc.text(period2||fmtDate(dateVal),M,PH-22);
+  sf(7.5,'normal',[115,120,132]);doc.text(client,M,PH-15);
+  // Footer
+  stroke([32,32,42],0.3);doc.line(M,PH-7,PW-M,PH-7);
+  sf(6.5,'normal',[95,100,112]);doc.text('Confidencial',PW-M,PH-2,{align:'right'});
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 2 — SUMÁRIO EXECUTIVO
+  // ════════════════════════════════════════════════════════════
+  newPage();sectionTitle('Sumário Executivo');
+  // Status cards
+  sf(8.5,'bold',GY5);doc.text('Status Geral',M,y);y+=10;
+  const cards3=[
+    {lbl:'Saudável', desc:'Tudo dentro do esperado',      col:GRN,sel:RG.semaphore==='green'},
+    {lbl:'Atenção',  desc:'Alguns pontos de atenção',     col:AMB,sel:RG.semaphore==='yellow'||RG.semaphore==='orange'},
+    {lbl:'Crítico',  desc:'Ações corretivas necessárias', col:RED,sel:RG.semaphore==='red'||RG.semaphore==='black'},
+  ];
+  const cw3=(CW-8)/3;
+  cards3.forEach((c3,i)=>{
+    const sx=M+i*(cw3+4);
+    fill(c3.sel?c3.col:GY1);doc.roundedRect(sx,y,cw3,22,2,2,'F');
+    stroke(c3.sel?c3.col:GY2,0.4);doc.roundedRect(sx,y,cw3,22,2,2,'S');
+    fill(c3.sel?W:c3.col);doc.circle(sx+7,y+8,2.8,'F');
+    sf(8.5,'bold',c3.sel?W:GY5);doc.text(c3.lbl,sx+14,y+9.5);
+    sf(7,'normal',c3.sel?[220,240,235]:GY3);doc.text(c3.desc,sx+14,y+16);
+  });
+  y+=30;
+  if(execCmt){
+    guard(12);sf(8.5,'normal',GY4);
+    const ecL=doc.splitTextToSize(execCmt,CW);
+    doc.text(ecL.slice(0,8),M,y);y+=ecL.slice(0,8).length*5+6;
+  }
+  const highlights=RG.activities.filter(a=>a.obs).slice(0,5);
+  if(highlights.length){
+    guard(16);sf(9,'bold',GY5);doc.text('Destaques do Período',M,y);y+=9;
+    highlights.forEach(a=>{
+      guard(8);fill(GY5);doc.circle(M+2,y-0.8,1.5,'F');
+      sf(8,'normal',GY4);
+      doc.text((doc.splitTextToSize(a.obs,CW-9))[0]||'',M+7,y);y+=6.5;
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 3 — TAREFAS DO PERÍODO
+  // ════════════════════════════════════════════════════════════
+  const allPeriodTasks=[...RG.activities,...RG.planned];
+  if(allPeriodTasks.length){
+    newPage();sectionTitle('Tarefas do Período');
+    drawTable2(
+      [{label:'Tarefa',w:55},{label:'Responsável',w:28},{label:'Status',w:30,type:'status'},{label:'Prazo',w:17},{label:'Conclusão',w:22,type:'pct'}],
+      allPeriodTasks.map(a=>({
+        cells:[a.title||'',a.resp||'',a.status||'Pendente',a.date?fmtDate(a.date):'—',
+               (a.status==='Concluído'||a.status==='Concluido')?'100':a.status==='Em andamento'?'50':'0'],
+        desc:''
+      }))
+    );
+    [[' Concluído',GRN],[' Em andamento',AMB],[' Pendente',RED]].forEach(([lbl,col],i)=>{
+      fill(col);doc.circle(M+i*42+2,y-1,2,'F');
+      sf(7.5,'normal',GY4);doc.text(lbl,M+i*42+5.5,y);
+    });y+=8;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 4 — ATIVIDADES REALIZADAS
+  // ════════════════════════════════════════════════════════════
+  if(RG.activities.length){
+    newPage();sectionTitle('Atividades Realizadas');
+    const icons=['[P]','</>','[V]','[S]','[E]'];
+    RG.activities.forEach((a,idx)=>{
+      const dl=a.obs?doc.splitTextToSize(a.obs,CW-17).slice(0,3):[];
+      const bH=Math.max(20,17+dl.length*4.5)+5;
+      guard(bH);
+      fill(GY1);doc.roundedRect(M,y,13,13,2,2,'F');
+      sf(7.5,'bold',GY4);doc.text(icons[idx%icons.length],M+2,y+9);
+      sf(9,'bold',GY5);doc.text(a.title||'',M+17,y+7);
+      sf(7,'normal',GY3);doc.text((a.cat||'')+(a.resp?' · '+a.resp:''),M+17,y+12.5);
+      if(dl.length){sf(7.5,'normal',GY4);dl.forEach((l,li)=>doc.text(l,M+17,y+18+li*4.5));y+=17+dl.length*4.5+5;}
+      else y+=20;
+      if(idx<RG.activities.length-1){stroke(GY2,0.2);doc.line(M+17,y-2,PW-M,y-2);}
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 5 — PRÓXIMAS ENTREGAS
+  // ════════════════════════════════════════════════════════════
+  if(RG.planned.length){
+    newPage();sectionTitle('Próximas Entregas');
+    const STCOLMAP={'Concluído':GRN,'Em andamento':AMB,'Pendente':RED,'Planejado':GY3,'Bloqueado':RED,'Aguardando cliente':AMB};
+    RG.planned.forEach((p,idx)=>{
+      const hasDesc=p.obs&&p.obs.trim();
+      const lineH=hasDesc?22:16;
+      guard(lineH);
+      const dotC=STCOLMAP[p.status]||GY3;
+      if(idx<RG.planned.length-1){stroke(GY2,0.5);doc.line(M+4,y+7,M+4,y+lineH+2);}
+      fill(dotC);doc.circle(M+4,y+5,3.5,'F');
+      sf(9,'bold',GY5);doc.text(p.title||'',M+14,y+6.5);
+      sf(7.5,'bold',dotC);doc.text(p.status||'',M+14,y+12.5);
+      if(p.date){sf(7,'normal',GY3);doc.text(fmtDate(p.date),PW-M,y+6.5,{align:'right'});}
+      if(p.resp){sf(7,'normal',GY3);doc.text(p.resp,PW-M,y+12.5,{align:'right'});}
+      if(hasDesc){sf(7,'normal',GY3);doc.text((doc.splitTextToSize(p.obs,CW-14))[0]||'',M+14,y+18.5);y+=22;}
+      else y+=16;
+    });
+    y+=4;sf(7,'normal',GY3);
+    doc.text('ⓘ  Datas sujeitas a alterações conforme andamento das atividades e validações.',M,y);y+=8;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 6 — PENDÊNCIAS DO CLIENTE
+  // ════════════════════════════════════════════════════════════
+  if(RG.pending.length){
+    newPage();sectionTitle('Pendências do Cliente');
+    drawTable2(
+      [{label:'Pendência',w:58},{label:'Responsável',w:22},{label:'Prazo',w:20},{label:'Tipo',w:22},{label:'Status',w:22,type:'status'}],
+      RG.pending.map(p=>({
+        cells:[p.title||'','Cliente',p.date?fmtDate(p.date):'—',p.type||'Outro','Em aberto'],desc:''
+      })),
+      'Atrasos nas pendências do cliente podem impactar o cronograma das entregas.'
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 7 — INDICADORES (KPIs)
+  // ════════════════════════════════════════════════════════════
+  const inds=RG.indicators.filter(i=>(i.l||'').trim()&&(i.v||'').trim());
+  if(inds.length){
+    newPage();sectionTitle('Indicadores (KPIs)');
+    const gap=6,CARD_H=44;
+    const iW=(CW-gap*(inds.length-1))/inds.length;
+    inds.forEach((ind,i)=>{
+      const ix=M+i*(iW+gap);
+      fill(GY1);doc.roundedRect(ix,y,iW,CARD_H,3,3,'F');
+      stroke(GY2,0.3);doc.roundedRect(ix,y,iW,CARD_H,3,3,'S');
+      fill(GRN);doc.rect(ix,y,iW,1.8,'F');
+      sf(22,'bold',GY5);doc.text(String(ind.v).trim(),ix+iW/2,y+27,{align:'center'});
+      sf(6,'normal',GY3);
+      doc.text((doc.splitTextToSize(String(ind.l).trim().toUpperCase(),iW-6))[0]||'',ix+iW/2,y+CARD_H-5,{align:'center'});
+    });
+    y+=CARD_H+8;
+    sf(7,'normal',GY3);
+    doc.text('ⓘ  Os indicadores refletem o desempenho do período'+(period2?' de '+period2:'')+'.', M,y);
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PRÓXIMOS PASSOS
+  // ════════════════════════════════════════════════════════════
+  if(RG.nextsteps.length){
+    guard(40);sectionTitle('Próximos Passos');
+    drawTable2(
+      [{label:'#',w:8},{label:'Ação',w:90},{label:'Responsável',w:40},{label:'Previsão',w:14}],
+      RG.nextsteps.map((n,i)=>({cells:[String(i+1),n.title||'',n.resp||'',n.date?fmtDate(n.date):'—'],desc:''}))
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // NOTA DE ENCERRAMENTO
+  // ════════════════════════════════════════════════════════════
+  if(closing){
+    guard(40);sectionTitle('Nota de Encerramento');
+    const cl=doc.splitTextToSize(closing,CW-10).slice(0,6);
+    const bH=cl.length*5+12;
+    fill(GY1);doc.roundedRect(M,y,CW,bH,2,2,'F');
+    stroke(GY2,0.3);doc.roundedRect(M,y,CW,bH,2,2,'S');
+    sf(8.5,'italic',GY4);doc.text(cl,M+6,y+8);
+    y+=bH+8;
+  }
+
+  const fname=`report-${(client||'cliente').toLowerCase().replace(/\s+/g,'-')}-${(period2||isoDate()).replace(/\s+/g,'-')}.pdf`;
+  doc.save(fname);
+  toast(`PDF gerado: ${fname}`);
+}
 
 function hexToRgb(hex){
   const r=parseInt(hex.slice(1,3),16);
