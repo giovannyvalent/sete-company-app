@@ -2975,7 +2975,7 @@ function generatePDF(){
       stroke(GY2,0.12);doc.line(M,y+rh,PW-M,y+rh);
       y+=rh;
     });
-    if(footnote){y+=4;sf(7,'normal',GY3);doc.text('ⓘ  '+footnote,M,y);y+=7;}
+    if(footnote){y+=4;sf(7,'normal',GY3);doc.text('(i)  '+footnote,M,y);y+=7;}
     else y+=5;
   }
 
@@ -3070,13 +3070,12 @@ function generatePDF(){
   // ════════════════════════════════════════════════════════════
   if(RG.activities.length){
     newPage();sectionTitle('Atividades Realizadas');
-    const icons=['[P]','</>','[V]','[S]','[E]'];
     RG.activities.forEach((a,idx)=>{
       const dl=a.obs?doc.splitTextToSize(a.obs,CW-17).slice(0,3):[];
       const bH=Math.max(20,17+dl.length*4.5)+5;
       guard(bH);
       fill(GY1);doc.roundedRect(M,y,13,13,2,2,'F');
-      sf(7.5,'bold',GY4);doc.text(icons[idx%icons.length],M+2,y+9);
+      sf(9,'bold',GY5);doc.text(String(idx+1),M+6.5,y+9,{align:'center'});
       sf(9,'bold',GY5);doc.text(a.title||'',M+17,y+7);
       sf(7,'normal',GY3);doc.text((a.cat||'')+(a.resp?' · '+a.resp:''),M+17,y+12.5);
       if(dl.length){sf(7.5,'normal',GY4);dl.forEach((l,li)=>doc.text(l,M+17,y+18+li*4.5));y+=17+dl.length*4.5+5;}
