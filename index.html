@@ -326,6 +326,68 @@ input[list].inp::-webkit-list-button{opacity:.5}
 .tp-chip.sel{background:var(--cyan3);border-color:var(--cyan);color:var(--cyan)}
 .task-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;max-height:140px;overflow-y:auto;padding:2px 0}
 
+/* ── LANDING PAGE ─────────────────────────────────────────────── */
+.landing-module-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:2.5rem 2rem;cursor:pointer;transition:all .25s;text-align:center;display:flex;flex-direction:column;align-items:center}
+.landing-module-card:hover{transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.landing-module-card.op{border-color:rgba(59,130,246,.2)}.landing-module-card.op:hover{border-color:var(--blue);background:rgba(59,130,246,.05)}
+.landing-module-card.gr{border-color:rgba(0,229,195,.2)}.landing-module-card.gr:hover{border-color:var(--cyan);background:rgba(0,229,195,.04)}
+.lmc-icon{font-size:2.8rem;margin-bottom:1rem;display:block;line-height:1}
+.lmc-title{font-size:22px;font-weight:700;margin-bottom:.5rem;letter-spacing:-.02em}
+.lmc-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:1.25rem;max-width:260px}
+.lmc-stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1.25rem}
+.lmc-stat{font-size:10px;padding:3px 11px;border:1px solid var(--border);border-radius:12px;color:var(--muted2)}
+.lmc-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:9px;font-size:13px;font-weight:600;border:1.5px solid currentColor;transition:all .15s;cursor:pointer;background:transparent;font-family:var(--f)}
+.landing-module-card.op .lmc-btn{color:var(--blue)}.landing-module-card.op .lmc-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.landing-module-card.gr .lmc-btn{color:var(--cyan)}.landing-module-card.gr .lmc-btn:hover{background:var(--cyan);color:#000;border-color:var(--cyan)}
+
+/* ── GROWTH DASHBOARD ─────────────────────────────────────────── */
+.growth-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.5rem}
+@media(max-width:700px){.growth-kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.gkpi{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;position:relative;overflow:hidden}
+.gkpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);opacity:.25}
+.gkpi.hi::before{opacity:1}
+.gkpi-lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.gkpi-val{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.gkpi-sub{font-size:11px;color:var(--muted2);margin-top:.3rem}
+.gkpi-prog{height:2px;background:var(--bg3);border-radius:2px;margin-top:.5rem;overflow:hidden}
+.gkpi-fill{height:100%;background:var(--cyan);border-radius:2px;transition:width .8s}
+.growth-chart-wrap{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+
+/* ── KANBAN PIPELINE ──────────────────────────────────────────── */
+.kanban-scroll{overflow-x:auto;padding-bottom:12px;margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem}
+.kanban-board{display:flex;gap:10px;align-items:start;min-width:max-content}
+.kanban-col{width:225px;flex-shrink:0;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s,background .15s;display:flex;flex-direction:column}
+.kanban-col.drag-over{border-color:var(--cyan)!important;background:rgba(0,229,195,.04)}
+.kanban-col-head{padding:10px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.kanban-col-title{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.kanban-col-meta{display:flex;align-items:center;justify-content:space-between}
+.kanban-col-count{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--muted)}
+.kanban-col-total{font-size:10px;color:var(--muted2)}
+.kanban-body{padding:8px;display:flex;flex-direction:column;gap:7px;min-height:140px;height:calc(100vh - 230px);overflow-y:auto}
+.kanban-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:grab;transition:border-color .15s,transform .15s;user-select:none}
+.kanban-card:hover{border-color:var(--border2);background:rgba(255,255,255,.07)}
+.kanban-card.dragging{opacity:.3;cursor:grabbing;transform:scale(.96);pointer-events:none}
+.kanban-card-company{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.kanban-card-service{font-size:11px;color:var(--muted2);margin-bottom:6px}
+.kanban-card-foot{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.kanban-card-valor{font-size:12px;font-weight:700;color:var(--cyan)}
+.kanban-add{width:100%;padding:7px;background:transparent;border:1px dashed var(--border2);border-radius:7px;color:var(--muted2);font-family:var(--f);font-size:11px;cursor:pointer;transition:all .15s;flex-shrink:0;margin:4px 0}
+.kanban-add:hover{border-color:var(--cyan);color:var(--cyan)}
+.kanban-empty{text-align:center;font-size:11px;color:var(--muted2);padding:20px 8px;font-style:italic;opacity:.4;flex:1;display:flex;align-items:center;justify-content:center}
+
+/* ── GROWTH OPP TABLE ─────────────────────────────────────────── */
+.opp-table{width:100%;border-collapse:collapse}
+.opp-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.opp-table td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
+.opp-table tr:last-child td{border-bottom:none}
+.opp-table tbody tr:hover td{background:rgba(255,255,255,.02)}
+
+/* ── METAS ────────────────────────────────────────────────────── */
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.meta-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.meta-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.meta-card-month{font-size:15px;font-weight:700;letter-spacing:-.01em}
+
 /* ── TIMELINE ROADMAP ─────────────────────────────────────────── */
 .tl-scroll-wrap{overflow-x:auto;padding-bottom:10px;margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem}
 .tl-board{display:flex;gap:10px;align-items:start;min-width:max-content}
@@ -385,14 +447,19 @@ input[list].inp::-webkit-list-button{opacity:.5}
   </div>
 </div>
 
-<div id="view-home"    class="view active"></div>
+<div id="view-landing"  class="view active"></div>
+<div id="view-home"    class="view"></div>
 <div id="view-detail"  class="view"></div>
 <div id="view-geral"   class="view"></div>
 <div id="view-clients" class="view"></div>
 <div id="view-roadmap" class="view"></div>
 <div id="view-report-gen" class="view"></div>
-<div id="view-timeline"   class="view"></div>
-<div id="view-matrix"     class="view"></div>
+<div id="view-timeline"      class="view"></div>
+<div id="view-matrix"        class="view"></div>
+<div id="view-growth-dash"   class="view"></div>
+<div id="view-growth-pipeline" class="view"></div>
+<div id="view-growth-opp"    class="view"></div>
+<div id="view-growth-metas"  class="view"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
@@ -424,7 +491,7 @@ const KEY = 'sete_wl_v2';
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
-let S = {lists:[], clients:[...DEF_CLIENTS], reports:[], matrix:{}};
+let S = {lists:[], clients:[...DEF_CLIENTS], reports:[], matrix:{}, growth:{opportunities:[],metas:[]}};
 let currentListId = null;
 let editingListId  = null;
 let editingTaskId  = null;  // for task edit modal
@@ -543,14 +610,14 @@ async function hydrate(){
     // Try localStorage
     try{
       const r = localStorage.getItem(KEY);
-      if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; setSyncStatus('local','Arquivo local'); return; } }
+      if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; if(!S.growth)S.growth={opportunities:[],metas:[]}; setSyncStatus('local','Arquivo local'); return; } }
     }catch(e){}
     // Try embedded JSON tag
     try{
       const el = document.getElementById('__data_backup__');
       if(el && el.textContent.trim()){
         const d=JSON.parse(el.textContent);
-        if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; persistLocal(); setSyncStatus('local','Arquivo local'); return; }
+        if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; if(!S.growth)S.growth={opportunities:[],metas:[]}; persistLocal(); setSyncStatus('local','Arquivo local'); return; }
       }
     }catch(e){}
     setSyncStatus('local','Arquivo local');
@@ -571,6 +638,7 @@ async function hydrate(){
           if(!S.clients) S.clients=[...DEF_CLIENTS];
           if(!S.reports) S.reports=[];
           if(!S.matrix) S.matrix={};
+          if(!S.growth) S.growth={opportunities:[],metas:[]};
           persistLocal();
           setSyncStatus('saved','Nuvem');
           setTimeout(()=>setSyncStatus('idle'), 2500);
@@ -585,7 +653,7 @@ async function hydrate(){
   // Fallback: localStorage
   try{
     const r = localStorage.getItem(KEY);
-    if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; setSyncStatus('offline','Cache local'); return; } }
+    if(r){ const d=JSON.parse(r); if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; if(!S.growth)S.growth={opportunities:[],metas:[]}; setSyncStatus('offline','Cache local'); return; } }
   }catch(e){}
 
   // Fallback: embedded tag
@@ -593,7 +661,7 @@ async function hydrate(){
     const el = document.getElementById('__data_backup__');
     if(el && el.textContent.trim()){
       const d=JSON.parse(el.textContent);
-      if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; persistLocal(); setSyncStatus('offline','Dados do arquivo'); return; }
+      if(d&&d.lists){ S=d; if(!S.clients)S.clients=[...DEF_CLIENTS]; if(!S.reports)S.reports=[]; if(!S.matrix)S.matrix={}; if(!S.growth)S.growth={opportunities:[],metas:[]}; persistLocal(); setSyncStatus('offline','Dados do arquivo'); return; }
     }
   }catch(e){}
 
@@ -743,7 +811,8 @@ function fmtDate(iso){
 // ═══════════════════════════════════════════════════════════════
 function show(s){
   currentScreen=s;
-  ['home','detail','geral','clients','roadmap','report-gen','timeline','matrix'].forEach(x=>{
+  ['landing','home','detail','geral','clients','roadmap','report-gen','timeline','matrix',
+   'growth-dash','growth-pipeline','growth-opp','growth-metas'].forEach(x=>{
     document.getElementById('view-'+x).classList.toggle('active',x===s);
   });
   renderTopbar();
@@ -770,6 +839,10 @@ function commit(){
   else if(currentScreen==='roadmap')renderRoadmap();
   else if(currentScreen==='timeline')renderTimeline();
   else if(currentScreen==='matrix')renderMatrix();
+  else if(currentScreen==='growth-dash')renderGrowthDash();
+  else if(currentScreen==='growth-pipeline')renderGrowthPipeline();
+  else if(currentScreen==='growth-opp')renderGrowthOpp();
+  else if(currentScreen==='growth-metas')renderGrowthMetas();
   renderTopbar();
 }
 
@@ -779,8 +852,23 @@ function commit(){
 function renderTopbar(){
   const nav=document.getElementById('topbar-nav');
   const right=document.getElementById('topbar-right');
-  if(currentScreen==='home'){
+  if(currentScreen==='landing'){
+    nav.innerHTML=`<div class="tnav active">Central de Gestão</div>`;
+    right.innerHTML='';
+  } else if(currentScreen==='growth-dash'||currentScreen==='growth-pipeline'||currentScreen==='growth-opp'||currentScreen==='growth-metas'){
     nav.innerHTML=`
+      <div class="tnav" onclick="goLanding()" style="color:var(--muted2)">${SVG_BACK} Menu</div>
+      <div class="tnav${currentScreen==='growth-dash'?' active':''}" onclick="openGrowthDash()">Dashboard</div>
+      <div class="tnav${currentScreen==='growth-pipeline'?' active':''}" onclick="openGrowthPipeline()">Pipeline</div>
+      <div class="tnav${currentScreen==='growth-opp'?' active':''}" onclick="openGrowthOpp()">Oportunidades</div>
+      <div class="tnav${currentScreen==='growth-metas'?' active':''}" onclick="openGrowthMetas()">Metas</div>`;
+    right.innerHTML=`<button class="btn cy sm" onclick="openOppModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M12 5v14M5 12h14"/></svg>
+      Nova oportunidade
+    </button>`;
+  } else if(currentScreen==='home'){
+    nav.innerHTML=`
+      <div class="tnav" onclick="goLanding()" style="color:var(--muted2)">${SVG_BACK} Menu</div>
       <div class="tnav active">Worklists</div>
       <div class="tnav" onclick="openGeral()">Report Geral</div>
       <div class="tnav" onclick="openRoadmap()">Roadmap</div>
@@ -2849,6 +2937,458 @@ function generatePDF_OLD(){
 
 
 // ═══════════════════════════════════════════════════════════════
+// GROWTH MODULE
+// ═══════════════════════════════════════════════════════════════
+const STAGES=[
+  {id:'lead',       lbl:'Lead',          col:'var(--muted2)',   bg:'rgba(255,255,255,.05)'},
+  {id:'contato',    lbl:'Contato',       col:'#60a5fa',         bg:'rgba(59,130,246,.08)'},
+  {id:'reuniao',    lbl:'Reunião',       col:'var(--amber)',    bg:'rgba(245,166,35,.08)'},
+  {id:'proposta',   lbl:'Proposta',      col:'var(--cyan)',     bg:'rgba(0,229,195,.08)'},
+  {id:'negociacao', lbl:'Negociação',    col:'#a78bfa',         bg:'rgba(139,92,246,.08)'},
+  {id:'fechado',    lbl:'✅ Fechado',    col:'var(--green)',    bg:'rgba(34,197,94,.08)'},
+  {id:'perdido',    lbl:'Perdido',       col:'#ef4444',         bg:'rgba(239,68,68,.06)'},
+];
+const ORIGENS=['Indicação','LinkedIn','Site','Prospecção ativa','WhatsApp','Evento','Outro'];
+const SERVICOS=['Agente IA','Sistema Web','Automação CRM','Consultoria','App Mobile','ERP','Bot WhatsApp','Outro'];
+
+function initGrowth(){
+  if(!S.growth)S.growth={opportunities:[],metas:[]};
+  if(!S.growth.opportunities)S.growth.opportunities=[];
+  if(!S.growth.metas)S.growth.metas=[];
+}
+function fmtMRR(v){
+  const n=Number(v||0);
+  if(n>=1000)return'R$ '+Math.floor(n/1000)+'k';
+  return'R$ '+n.toLocaleString('pt-BR');
+}
+function oppMonth(o){return new Date(o.createdAt).toISOString().slice(0,7);}
+function monthLbl(ym){
+  const ms=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return ms[parseInt(ym.split('-')[1])-1];
+}
+
+// ── ROUTING ──────────────────────────────────────────────────
+function goLanding(){show('landing');renderLanding();}
+function enterOperacao(){show('home');renderHome();}
+function enterGrowth(){openGrowthDash();}
+function openGrowthDash(){show('growth-dash');renderGrowthDash();}
+function openGrowthPipeline(){show('growth-pipeline');renderGrowthPipeline();}
+function openGrowthOpp(){show('growth-opp');renderGrowthOpp();}
+function openGrowthMetas(){show('growth-metas');renderGrowthMetas();}
+
+// ── LANDING ──────────────────────────────────────────────────
+function renderLanding(){
+  const el=document.getElementById('view-landing');if(!el)return;
+  initGrowth();
+  const allTs=allTasks();
+  const pendentes=allTs.filter(t=>t.status!=='concluido').length;
+  const opps=S.growth.opportunities||[];
+  const openOpps=opps.filter(o=>o.stage!=='fechado'&&o.stage!=='perdido').length;
+  const now=new Date();
+  const thisMonth=now.toISOString().slice(0,7);
+  const mrrMes=opps.filter(o=>o.stage==='fechado'&&oppMonth(o)===thisMonth).reduce((s,o)=>s+Number(o.valor||0),0);
+  el.innerHTML=`
+    <div style="max-width:740px;margin:3rem auto;padding:0 .5rem">
+      <div style="text-align:center;margin-bottom:2.5rem">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:.75rem">SETE COMPANY TECNOLOGIA</div>
+        <div style="font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.03em;margin-bottom:.5rem">Central de Gestão</div>
+        <div style="font-size:13px;color:var(--muted)">Selecione o módulo que deseja acessar</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="landing-module-card op" onclick="enterOperacao()">
+          <span class="lmc-icon">⚙️</span>
+          <div class="lmc-title">Operação</div>
+          <div class="lmc-desc">Gestão de demandas, worklists, roadmap, relatórios e controle de projetos por cliente.</div>
+          <div class="lmc-stats">
+            <span class="lmc-stat">${S.lists.length} lista${S.lists.length!==1?'s':''}</span>
+            <span class="lmc-stat" style="border-color:rgba(245,166,35,.3);color:var(--amber)">${pendentes} pendentes</span>
+            <span class="lmc-stat" style="border-color:rgba(34,197,94,.3);color:var(--green)">${allTs.filter(t=>t.status==='concluido').length} concluídas</span>
+          </div>
+          <button class="lmc-btn" onclick="event.stopPropagation();enterOperacao()">Acessar →</button>
+        </div>
+        <div class="landing-module-card gr" onclick="enterGrowth()">
+          <span class="lmc-icon">🚀</span>
+          <div class="lmc-title">Growth</div>
+          <div class="lmc-desc">Pipeline comercial, oportunidades, metas de vendas e controle de novos contratos e MRR.</div>
+          <div class="lmc-stats">
+            <span class="lmc-stat">${opps.length} oportunidade${opps.length!==1?'s':''}</span>
+            <span class="lmc-stat" style="border-color:rgba(0,229,195,.3);color:var(--cyan)">${openOpps} em aberto</span>
+            ${mrrMes>0?`<span class="lmc-stat" style="border-color:rgba(34,197,94,.3);color:var(--green)">${fmtMRR(mrrMes)} MRR</span>`:''}
+          </div>
+          <button class="lmc-btn" onclick="event.stopPropagation();enterGrowth()">Acessar →</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── GROWTH DASHBOARD ─────────────────────────────────────────
+function renderGrowthDash(){
+  const el=document.getElementById('view-growth-dash');if(!el)return;
+  initGrowth();
+  const opps=S.growth.opportunities||[];
+  const now=new Date();
+  const thisMonth=now.toISOString().slice(0,7);
+  const mo=opps.filter(o=>oppMonth(o)===thisMonth);
+  const leads=mo.length;
+  const reunioes=mo.filter(o=>['reuniao','proposta','negociacao','fechado'].includes(o.stage)).length;
+  const propostas=mo.filter(o=>['proposta','negociacao','fechado'].includes(o.stage)).length;
+  const contratos=mo.filter(o=>o.stage==='fechado').length;
+  const mrr=opps.filter(o=>o.stage==='fechado'&&oppMonth(o)===thisMonth).reduce((s,o)=>s+Number(o.valor||0),0);
+  const meta=(S.growth.metas||[]).find(m=>m.mes===thisMonth)||{};
+  function pct(a,t){return t?Math.min(100,Math.round(a/t*100)):0;}
+
+  // Chart: last 6 months
+  const chartData=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const ym=d.toISOString().slice(0,7);
+    const m2=opps.filter(o=>oppMonth(o)===ym);
+    chartData.push({month:monthLbl(ym),leads:m2.length,fechados:m2.filter(o=>o.stage==='fechado').length});
+  }
+  const maxV=Math.max(...chartData.flatMap(d=>[d.leads,d.fechados]),5);
+  const cH=90,bW=14,grpW=38;
+  let svgB='';
+  chartData.forEach((d,i)=>{
+    const x=28+i*grpW;
+    const h1=Math.round((d.leads/maxV)*(cH-18));
+    const h2=Math.round((d.fechados/maxV)*(cH-18));
+    svgB+=`<rect x="${x}" y="${cH-h1-4}" width="${bW}" height="${h1}" fill="rgba(0,229,195,.55)" rx="2"/>
+      <rect x="${x+bW+3}" y="${cH-h2-4}" width="${bW}" height="${h2}" fill="#22c55e" rx="2"/>
+      <text x="${x+bW}" y="${cH+5}" text-anchor="middle" font-size="8" fill="#606880">${d.month}</text>
+      ${d.leads>0?`<text x="${x+bW/2}" y="${cH-h1-7}" text-anchor="middle" font-size="7" fill="rgba(0,229,195,.9)">${d.leads}</text>`:''}
+      ${d.fechados>0?`<text x="${x+bW+bW/2+3}" y="${cH-h2-7}" text-anchor="middle" font-size="7" fill="#22c55e">${d.fechados}</text>`:''}`;
+  });
+  const nomeMes=now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  el.innerHTML=`
+    <div class="home-header">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">Growth Dashboard</h2>
+        <div style="font-size:12px;color:var(--muted2);margin-top:3px;text-transform:capitalize">${nomeMes}</div>
+      </div>
+    </div>
+    <div class="growth-kpi-grid">
+      <div class="gkpi hi"><div class="gkpi-lbl">Leads</div><div class="gkpi-val">${leads}</div>${meta.leads?`<div class="gkpi-prog"><div class="gkpi-fill" style="width:${pct(leads,meta.leads)}%"></div></div><div class="gkpi-sub">Meta ${meta.leads} · ${pct(leads,meta.leads)}%</div>`:'<div class="gkpi-sub">Sem meta</div>'}</div>
+      <div class="gkpi"><div class="gkpi-lbl">Reuniões</div><div class="gkpi-val" style="color:#60a5fa">${reunioes}</div>${meta.reunioes?`<div class="gkpi-prog"><div class="gkpi-fill" style="width:${pct(reunioes,meta.reunioes)}%;background:#60a5fa"></div></div><div class="gkpi-sub">Meta ${meta.reunioes} · ${pct(reunioes,meta.reunioes)}%</div>`:'<div class="gkpi-sub">Sem meta</div>'}</div>
+      <div class="gkpi"><div class="gkpi-lbl">Propostas</div><div class="gkpi-val" style="color:var(--amber)">${propostas}</div>${meta.propostas?`<div class="gkpi-prog"><div class="gkpi-fill" style="width:${pct(propostas,meta.propostas)}%;background:var(--amber)"></div></div><div class="gkpi-sub">Meta ${meta.propostas} · ${pct(propostas,meta.propostas)}%</div>`:'<div class="gkpi-sub">Sem meta</div>'}</div>
+      <div class="gkpi"><div class="gkpi-lbl">Contratos</div><div class="gkpi-val" style="color:var(--green)">${contratos}</div>${meta.contratos?`<div class="gkpi-prog"><div class="gkpi-fill" style="width:${pct(contratos,meta.contratos)}%;background:var(--green)"></div></div><div class="gkpi-sub">Meta ${meta.contratos} · ${pct(contratos,meta.contratos)}%</div>`:'<div class="gkpi-sub">Sem meta</div>'}</div>
+      <div class="gkpi"><div class="gkpi-lbl">MRR Novo</div><div class="gkpi-val" style="font-size:20px;color:var(--cyan)">${fmtMRR(mrr)}</div>${meta.mrr?`<div class="gkpi-prog"><div class="gkpi-fill" style="width:${pct(mrr,meta.mrr)}%"></div></div><div class="gkpi-sub">Meta ${fmtMRR(meta.mrr)}</div>`:'<div class="gkpi-sub">Sem meta</div>'}</div>
+    </div>
+    <div class="growth-chart-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem">
+        <div style="font-size:12px;font-weight:600">Leads × Fechamentos — Últimos 6 meses</div>
+        <div style="display:flex;gap:14px">
+          <span style="font-size:10px;color:rgba(0,229,195,.8);display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(0,229,195,.55);display:inline-block"></span>Leads</span>
+          <span style="font-size:10px;color:var(--green);display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#22c55e;display:inline-block"></span>Fechamentos</span>
+        </div>
+      </div>
+      <svg viewBox="0 0 260 ${cH+12}" style="width:100%;height:auto;display:block">
+        <line x1="22" y1="4" x2="22" y2="${cH}" stroke="#1e2535" stroke-width="1"/>
+        <line x1="22" y1="${cH}" x2="258" y2="${cH}" stroke="#1e2535" stroke-width="1"/>
+        ${svgB}
+      </svg>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between">
+          Pipeline resumo
+          <button class="btn xs cy" onclick="openGrowthPipeline()">Ver kanban →</button>
+        </div>
+        ${STAGES.map(st=>{const n=opps.filter(o=>o.stage===st.id).length;const v=opps.filter(o=>o.stage===st.id).reduce((s,o)=>s+Number(o.valor||0),0);return`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border)"><span style="font-size:11px;font-weight:600;color:${st.col}">${st.lbl}</span><div style="display:flex;gap:10px;align-items:center"><span style="font-size:11px;font-weight:600;color:var(--text)">${n}</span>${v>0?`<span style="font-size:10px;color:var(--muted2)">${fmtMRR(v)}</span>`:''}</div></div>`;}).join('')}
+      </div>
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600">Últimas oportunidades</div>
+        ${opps.slice().sort((a,b)=>b.createdAt-a.createdAt).slice(0,5).map(o=>{const st=STAGES.find(s=>s.id===o.stage)||STAGES[0];return`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openOppModal('${o.id}')"><div><div style="font-size:12px;font-weight:600;color:var(--text)">${o.empresa||'—'}</div><div style="font-size:10px;color:var(--muted2)">${o.servico||'—'}</div></div><div style="text-align:right"><div style="font-size:11px;font-weight:600;color:var(--cyan)">${fmtMRR(o.valor)}</div><span style="font-size:9px;font-weight:600;color:${st.col}">${st.lbl}</span></div></div>`;}).join('')||'<div style="padding:1.5rem;text-align:center;font-size:12px;color:var(--muted2)">Nenhuma oportunidade ainda</div>'}
+      </div>
+    </div>`;
+}
+
+// ── PIPELINE KANBAN ──────────────────────────────────────────
+function renderGrowthPipeline(){
+  const el=document.getElementById('view-growth-pipeline');if(!el)return;
+  initGrowth();
+  const opps=S.growth.opportunities||[];
+  el.innerHTML=`
+    <div class="home-header" style="margin-bottom:1rem">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">Pipeline Comercial</h2>
+        <div style="font-size:12px;color:var(--muted2);margin-top:3px">${opps.filter(o=>o.stage!=='fechado'&&o.stage!=='perdido').length} em aberto · ${opps.filter(o=>o.stage==='fechado').length} fechados</div>
+      </div>
+    </div>
+    <div class="kanban-scroll">
+      <div class="kanban-board" id="kanban-board">
+        ${STAGES.map(st=>{
+          const cols=opps.filter(o=>o.stage===st.id);
+          const totalV=cols.reduce((s,o)=>s+Number(o.valor||0),0);
+          return`<div class="kanban-col" data-stage="${st.id}" style="--stage-col:${st.col}">
+            <div class="kanban-col-head" style="border-top:3px solid ${st.col}">
+              <div class="kanban-col-title" style="color:${st.col}">${st.lbl}</div>
+              <div class="kanban-col-meta">
+                ${totalV>0?`<span class="kanban-col-total">${fmtMRR(totalV)}</span>`:''}
+                <span class="kanban-col-count">${cols.length}</span>
+              </div>
+            </div>
+            <div class="kanban-body">
+              ${cols.length?cols.map(o=>`
+                <div class="kanban-card" draggable="true" data-id="${o.id}">
+                  <div class="kanban-card-company">${o.empresa||'—'}</div>
+                  <div class="kanban-card-service">${o.servico||'—'}</div>
+                  <div class="kanban-card-foot">
+                    <span class="kanban-card-valor">${fmtMRR(o.valor)}</span>
+                    ${o.responsavel?`<span class="badge b-person" style="font-size:9px;padding:1px 6px">${o.responsavel.split(' ')[0]}</span>`:''}
+                  </div>
+                </div>`).join(''):'<div class="kanban-empty">Solte aqui</div>'}
+            </div>
+            <button class="kanban-add" onclick="openOppModal(null,'${st.id}')">+ Adicionar</button>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  // DnD
+  const board=document.getElementById('kanban-board');
+  if(!board)return;
+  let dragId=null;
+  board.querySelectorAll('.kanban-card').forEach(card=>{
+    card.addEventListener('dragstart',e=>{
+      dragId=card.dataset.id;
+      e.dataTransfer.effectAllowed='move';
+      setTimeout(()=>card.classList.add('dragging'),0);
+    });
+    card.addEventListener('dragend',()=>card.classList.remove('dragging'));
+    card.addEventListener('click',()=>openOppModal(card.dataset.id));
+  });
+  board.querySelectorAll('.kanban-col').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
+    col.addEventListener('dragleave',e=>{if(!col.contains(e.relatedTarget))col.classList.remove('drag-over');});
+    col.addEventListener('drop',e=>{
+      e.preventDefault();col.classList.remove('drag-over');
+      if(dragId)moveOppToStage(dragId,col.dataset.stage);
+      dragId=null;
+    });
+  });
+}
+
+function moveOppToStage(id,stage){
+  initGrowth();
+  const opp=(S.growth.opportunities||[]).find(o=>o.id===id);
+  if(!opp)return;
+  if(stage==='fechado'&&opp.stage!=='fechado')opp.closedAt=Date.now();
+  opp.stage=stage;
+  persist();renderGrowthPipeline();
+}
+
+// ── OPP MODAL ────────────────────────────────────────────────
+function openOppModal(id,defaultStage){
+  initGrowth();
+  const opp=id?(S.growth.opportunities||[]).find(o=>o.id===id):null;
+  const defStage=opp?opp.stage:(defaultStage||'lead');
+  const stOpts=STAGES.map(s=>`<option value="${s.id}"${defStage===s.id?' selected':''}>${s.lbl}</option>`).join('');
+  const respOpts=PEOPLE.map(p=>`<option value="${p}"${opp&&opp.responsavel===p?' selected':''}>${p}</option>`).join('');
+  const origOpts=ORIGENS.map(o=>`<option value="${o}"${opp&&opp.origem===o?' selected':''}>${o}</option>`).join('');
+  const svcOpts=SERVICOS.map(s=>`<option value="${s}"${opp&&opp.servico===s?' selected':''}>${s}</option>`).join('');
+  showModal(`
+    <div class="drawer-head">
+      <h3>${opp?'Editar oportunidade':'Nova oportunidade'}</h3>
+      <button class="btn icon-btn ghost" onclick="closeModal()">${SVG_CLOSE}</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-section">
+        <div class="drawer-section-title">Empresa</div>
+        <div class="frow"><label>Empresa *</label><input class="inp" id="op-empresa" placeholder="Nome da empresa" value="${opp?(opp.empresa||'').replace(/"/g,'&quot;'):''}"></div>
+        <div class="frow"><label>Contato</label><input class="inp" id="op-contato" placeholder="Nome do contato" value="${opp?(opp.contato||'').replace(/"/g,'&quot;'):''}"></div>
+      </div>
+      <div class="drawer-section">
+        <div class="drawer-section-title">Negócio</div>
+        <div class="frow-2">
+          <div><label>Serviço de interesse</label><select class="inp" id="op-servico"><option value="">—</option>${svcOpts}</select></div>
+          <div><label>Valor estimado (R$)</label><input class="inp" id="op-valor" type="number" placeholder="0" min="0" value="${opp?opp.valor||'':''}"></div>
+        </div>
+        <div class="frow-2">
+          <div><label>Responsável</label><select class="inp" id="op-resp"><option value="">—</option>${respOpts}</select></div>
+          <div><label>Origem do lead</label><select class="inp" id="op-origem"><option value="">—</option>${origOpts}</select></div>
+        </div>
+        <div class="frow"><label>Etapa do pipeline</label><select class="inp" id="op-stage">${stOpts}</select></div>
+      </div>
+      <div class="drawer-section">
+        <div class="drawer-section-title">Observações</div>
+        <div class="frow"><textarea class="inp" id="op-notes" rows="3" placeholder="Contexto, próximos passos, objeções...">${opp?(opp.notes||'').replace(/</g,'&lt;'):''}</textarea></div>
+      </div>
+    </div>
+    <div class="drawer-foot">
+      ${opp?`<button class="btn danger" onclick="deleteOpp('${opp.id}')">Excluir</button>`:''}
+      <div class="spacer"></div>
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn cy" onclick="saveOpp('${opp?opp.id:''}')">${opp?'Salvar':'Adicionar'}</button>
+    </div>`);
+}
+
+function saveOpp(id){
+  initGrowth();
+  const empresa=document.getElementById('op-empresa').value.trim();
+  if(!empresa){document.getElementById('op-empresa').focus();return;}
+  const fields={
+    empresa,
+    contato    :document.getElementById('op-contato').value.trim(),
+    servico    :document.getElementById('op-servico').value,
+    valor      :Number(document.getElementById('op-valor').value)||0,
+    responsavel:document.getElementById('op-resp').value,
+    origem     :document.getElementById('op-origem').value,
+    stage      :document.getElementById('op-stage').value||'lead',
+    notes      :document.getElementById('op-notes').value.trim(),
+  };
+  if(id){
+    const opp=S.growth.opportunities.find(o=>o.id===id);
+    if(opp){if(fields.stage==='fechado'&&opp.stage!=='fechado')opp.closedAt=Date.now();Object.assign(opp,fields);}
+  }else{
+    S.growth.opportunities.push({id:uid(),...fields,createdAt:Date.now()});
+  }
+  persist();closeModal();
+  if(currentScreen==='growth-pipeline')renderGrowthPipeline();
+  else if(currentScreen==='growth-opp')renderGrowthOpp();
+  else if(currentScreen==='growth-dash')renderGrowthDash();
+  toast('✅ Oportunidade salva!');
+}
+
+function deleteOpp(id){
+  if(!confirm('Excluir esta oportunidade?'))return;
+  S.growth.opportunities=S.growth.opportunities.filter(o=>o.id!==id);
+  persist();closeModal();
+  if(currentScreen==='growth-pipeline')renderGrowthPipeline();
+  else if(currentScreen==='growth-opp')renderGrowthOpp();
+  else renderGrowthDash();
+}
+
+// ── OPORTUNIDADES LIST ───────────────────────────────────────
+function renderGrowthOpp(){
+  const el=document.getElementById('view-growth-opp');if(!el)return;
+  initGrowth();
+  const opps=S.growth.opportunities||[];
+  const sorted=[...opps].sort((a,b)=>b.createdAt-a.createdAt);
+  el.innerHTML=`
+    <div class="home-header">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">Oportunidades</h2>
+        <div style="font-size:12px;color:var(--muted2);margin-top:3px">${opps.length} cadastrada${opps.length!==1?'s':''}</div>
+      </div>
+    </div>
+    ${opps.length===0?`<div style="text-align:center;padding:4rem;color:var(--muted2)">Nenhuma oportunidade cadastrada ainda.<br><button class="btn cy" style="margin-top:1rem" onclick="openOppModal()">+ Cadastrar primeira</button></div>`:`
+    <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:auto">
+      <table class="opp-table">
+        <thead><tr><th>Empresa</th><th>Contato</th><th>Serviço</th><th>Valor</th><th>Responsável</th><th>Etapa</th><th>Origem</th><th></th></tr></thead>
+        <tbody>${sorted.map(o=>{
+          const st=STAGES.find(s=>s.id===o.stage)||STAGES[0];
+          return`<tr>
+            <td style="font-size:13px;font-weight:600;color:var(--text);cursor:pointer" onclick="openOppModal('${o.id}')">${o.empresa||'—'}</td>
+            <td style="color:var(--muted)">${o.contato||'—'}</td>
+            <td>${o.servico?`<span class="badge b-client" style="font-size:10px">${o.servico}</span>`:'—'}</td>
+            <td style="font-weight:600;color:var(--cyan)">${fmtMRR(o.valor)}</td>
+            <td>${o.responsavel?`<span class="badge b-person" style="font-size:10px">${o.responsavel}</span>`:'—'}</td>
+            <td><span style="font-size:10px;font-weight:600;color:${st.col}">${st.lbl}</span></td>
+            <td style="color:var(--muted2);font-size:11px">${o.origem||'—'}</td>
+            <td><button class="btn icon-btn" onclick="openOppModal('${o.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button></td>
+          </tr>`;}).join('')}</tbody>
+      </table>
+    </div>`}`;
+}
+
+// ── METAS ───────────────────────────────────────────────────
+function renderGrowthMetas(){
+  const el=document.getElementById('view-growth-metas');if(!el)return;
+  initGrowth();
+  const metas=[...S.growth.metas||[]].sort((a,b)=>b.mes.localeCompare(a.mes));
+  const opps=S.growth.opportunities||[];
+  const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  el.innerHTML=`
+    <div class="home-header">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">Metas</h2>
+        <div style="font-size:12px;color:var(--muted2);margin-top:3px">${metas.length} período${metas.length!==1?'s':''}</div>
+      </div>
+    </div>
+    ${metas.length===0?`<div style="text-align:center;padding:4rem;color:var(--muted2)">Nenhuma meta definida ainda.<br><button class="btn cy" style="margin-top:1rem" onclick="openMetaModal()">+ Definir primeira meta</button></div>`:`
+    <div class="meta-grid">${metas.map(m=>{
+      const mo=opps.filter(o=>oppMonth(o)===m.mes);
+      const aL=mo.length,aR=mo.filter(o=>['reuniao','proposta','negociacao','fechado'].includes(o.stage)).length;
+      const aP=mo.filter(o=>['proposta','negociacao','fechado'].includes(o.stage)).length;
+      const aC=mo.filter(o=>o.stage==='fechado').length;
+      const aM=mo.filter(o=>o.stage==='fechado').reduce((s,o)=>s+Number(o.valor||0),0);
+      const [y,mo2]=m.mes.split('-');
+      const label=MONTHS[parseInt(mo2)-1]+' '+y;
+      function bar(act,tgt,col){const p=tgt?Math.min(100,Math.round(act/tgt*100)):0;return`<div style="height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:3px"><div style="width:${p}%;height:100%;background:${col};border-radius:2px"></div></div>`;}
+      return`<div class="meta-card">
+        <div class="meta-card-head">
+          <div class="meta-card-month">${label}</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn xs" onclick="openMetaModal('${m.id}')">Editar</button>
+            <button class="btn xs danger" onclick="deleteMeta('${m.id}')">✕</button>
+          </div>
+        </div>
+        ${[
+          {lbl:'Leads',act:aL,tgt:m.leads,col:'var(--cyan)'},
+          {lbl:'Reuniões',act:aR,tgt:m.reunioes,col:'#60a5fa'},
+          {lbl:'Propostas',act:aP,tgt:m.propostas,col:'var(--amber)'},
+          {lbl:'Contratos',act:aC,tgt:m.contratos,col:'var(--green)'},
+          {lbl:'MRR (R$)',act:aM,tgt:m.mrr,col:'var(--cyan)'},
+        ].map(r=>`<div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+            <span style="font-size:10px;font-weight:500;color:var(--muted)">${r.lbl}</span>
+            <span style="font-size:11px;font-weight:700;color:${r.col}">${r.lbl==='MRR (R$)'?fmtMRR(r.act):r.act}<span style="font-size:10px;font-weight:400;color:var(--muted2)"> / ${r.lbl==='MRR (R$)'?fmtMRR(r.tgt):r.tgt}</span></span>
+          </div>
+          ${bar(r.act,r.tgt,r.col)}
+        </div>`).join('')}
+      </div>`;
+    }).join('')}</div>`}`;
+}
+
+function openMetaModal(id){
+  initGrowth();
+  const meta=id?(S.growth.metas||[]).find(m=>m.id===id):null;
+  const defMes=meta?meta.mes:new Date().toISOString().slice(0,7);
+  showModal(`
+    <div class="drawer-head">
+      <h3>${meta?'Editar meta':'Nova meta'}</h3>
+      <button class="btn icon-btn ghost" onclick="closeModal()">${SVG_CLOSE}</button>
+    </div>
+    <div class="drawer-body">
+      <div class="frow"><label>Período</label><input class="inp" id="mt-mes" type="month" value="${defMes}"></div>
+      <div class="frow-2">
+        <div><label>Meta Leads</label><input class="inp" id="mt-leads" type="number" min="0" placeholder="0" value="${meta?meta.leads:''}"></div>
+        <div><label>Meta Reuniões</label><input class="inp" id="mt-reunioes" type="number" min="0" placeholder="0" value="${meta?meta.reunioes:''}"></div>
+      </div>
+      <div class="frow-2">
+        <div><label>Meta Propostas</label><input class="inp" id="mt-propostas" type="number" min="0" placeholder="0" value="${meta?meta.propostas:''}"></div>
+        <div><label>Meta Contratos</label><input class="inp" id="mt-contratos" type="number" min="0" placeholder="0" value="${meta?meta.contratos:''}"></div>
+      </div>
+      <div class="frow"><label>Meta MRR (R$)</label><input class="inp" id="mt-mrr" type="number" min="0" placeholder="0" value="${meta?meta.mrr:''}"></div>
+    </div>
+    <div class="drawer-foot">
+      ${meta?`<button class="btn danger" onclick="deleteMeta('${meta.id}')">Excluir</button>`:''}
+      <div class="spacer"></div>
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn cy" onclick="saveMeta('${meta?meta.id:''}')">Salvar</button>
+    </div>`);
+}
+
+function saveMeta(id){
+  initGrowth();
+  const mes=document.getElementById('mt-mes').value;
+  if(!mes){toast('⚠ Selecione o período');return;}
+  const fields={mes,leads:Number(document.getElementById('mt-leads').value)||0,reunioes:Number(document.getElementById('mt-reunioes').value)||0,propostas:Number(document.getElementById('mt-propostas').value)||0,contratos:Number(document.getElementById('mt-contratos').value)||0,mrr:Number(document.getElementById('mt-mrr').value)||0};
+  if(id){const m=S.growth.metas.find(x=>x.id===id);if(m)Object.assign(m,fields);}
+  else S.growth.metas.push({id:uid(),...fields});
+  persist();closeModal();renderGrowthMetas();
+  if(currentScreen==='growth-dash')renderGrowthDash();
+  toast('✅ Meta salva!');
+}
+
+function deleteMeta(id){
+  if(!confirm('Excluir esta meta?'))return;
+  S.growth.metas=S.growth.metas.filter(m=>m.id!==id);
+  persist();closeModal();renderGrowthMetas();
+}
+
+// ═══════════════════════════════════════════════════════════════
 // PDF GENERATION — Relatório Executivo (redesign 2026)
 // ═══════════════════════════════════════════════════════════════
 function generatePDF(){
@@ -3182,7 +3722,7 @@ function hexToRgb(hex){
 (async ()=>{
   await hydrate();
   renderTopbar();
-  renderHome();
+  renderLanding();
 })();
 </script>
 </body>
